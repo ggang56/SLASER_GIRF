@@ -95,7 +95,7 @@ s_echo.gr_waveform = g_hs;
 %% This code demonstrates how to add a gradient object to MPS gradient waveforms 
 AQ_base_time = 35; % AQ`base:time: time of reference point of object within the sequence [msec]
 % Note that the first RF starts before time "0". You need to take this into
-% account when calculate "t".
+% account when calculating "t".
 
 nt = floor(AQ_base_time / DWELL);
 t = (0:nt - 1).' * DWELL; % <- this part must be modified accordingly!
