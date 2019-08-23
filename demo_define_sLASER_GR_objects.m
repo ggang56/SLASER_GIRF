@@ -3,14 +3,6 @@
 % Email: namgyunl@usc.edu, ggang56@gmail.com (preferred)
 % Started: 08/22/2019, Last modified: 08/22/2019
 
-%% Define RF structure
-% You need to define it by yourself!
-% Look at the maobjrfvar__mxg.c and figure out what parameters are needed
-% to convert am_shape and fm_shape into amplitude in [uT] and pulse duration in [msec].
-% Also look at how rfdtool converts "b1" to am_shape and fm_shape.
-% You basically need to reverse this process.
-
-
 %% Define GR structure
 GR = struct('dur'    , [], ... % duration of the object [msec]
             'str'    , [], ... % strength of the gradient [mT/m]
@@ -29,7 +21,7 @@ GR = struct('dur'    , [], ... % duration of the object [msec]
 %% Initialize all gradients
 ex                  = GR;
 r_ex                = GR;
-        
+
 d_echo_spoil        = repmat(GR, [3 1]); % [0]: left  crusher on the 1st FOCI pulse (M)
 r_echo_spoil        = repmat(GR, [3 1]); % [0]: right crusher on the 1st FOCI pulse (M)
 d_echo              = GR;                %      left  crusher on the 1st FOCI pulse (P)
