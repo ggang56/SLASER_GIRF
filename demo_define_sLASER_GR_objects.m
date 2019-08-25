@@ -22,8 +22,18 @@ GR = struct('dur'    , [], ... % duration of the object [msec]
                                % The value is calculated from the duration, samples = dur / dwell_dur + 2
 
 %% Initialize all gradients
-ex                  = GR;
-r_ex                = GR;
+s_ex          = GR;
+r_ex          = GR;
+d_echo_spoil1 = GR; % left crusher on the 1st FOCI pulse (P)
+s_echo        = GR; % gradient for the 1st FOCI pulse (P)
+d_echo_spoil2 = GR; % left crusher on the 1st FOCI pulse (S)
+laser_s_echo  = GR; % gradient for the 2nd FOCI pulse (P)
+laser_s_echo2 = GR; % gradient for the 3rd FOCI pulse (S)
+r_echo_spoil2 = GR; % right crusher on the 3rd FOCI pulse (S)
+d_echo2       = GR; % left crusher on the 4th FOCI pulse (M)
+s_echo2       = GR; % gradient for the 4th FOCI pulse (S)
+r_echo2       = GR; % right crusher on the 4th FOCI pulse (M)
+r_echo_spoil1 = GR; % right crusher on the 4th FOCI pulse (P)
 
 %% Define gradient objects
 % s_ex
@@ -38,10 +48,17 @@ s_ex.ref               = 6.1563;  % [msec]
 s_ex.time              = 0.0000;  % [msec]
 s_ex.samples           = 1083;
 
-laser_d_echo_spoil  = repmat(GR, [3 1]); % [0]: left  crusher on the 2nd FOCI pulse (M)
-laser_r_echo_spoil  = repmat(GR, [3 1]); % [0]: right crusher on the 2nd FOCI pulse (M)
-laser_d_echo        = GR;                %      left  crusher on the 2nd FOCI pulse (P)
-laser_r_echo        = GR;                %      right crusher on the 2nd FOCI pulse (P) 
+% r_ex
+r_ex.dur               = 0.4000;  % [msec]
+r_ex.str               = 15.7834; % [mT/m]
+r_ex.ori               = 0;       % M_ORI
+r_ex.lenc              = 0.0000;  % [msec]
+r_ex.slope             = 0.2000;  % [msec]
+r_ex.slope1            = 0.2000;  % [msec]
+r_ex.slope2            = 0.2000;  % [msec]
+r_ex.ref               = -1.1629; % [msec]
+r_ex.time              = 0.0000;  % [msec]
+r_ex.samples           = 2;
 
 % d_echo_spoil1
 d_echo_spoil1.dur      = 1.3000;   % [msec]
