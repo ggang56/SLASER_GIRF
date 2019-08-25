@@ -3,6 +3,9 @@
 % Email: namgyunl@usc.edu, ggang56@gmail.com (preferred)
 % Started: 08/22/2019, Last modified: 08/22/2019
 
+close all; clear all; clc;
+
+
 %% Define GR structure
 GR = struct('dur'    , [], ... % duration of the object [msec]
             'str'    , [], ... % strength of the gradient [mT/m]
@@ -22,264 +25,249 @@ GR = struct('dur'    , [], ... % duration of the object [msec]
 ex                  = GR;
 r_ex                = GR;
 
-d_echo_spoil        = repmat(GR, [3 1]); % [0]: left  crusher on the 1st FOCI pulse (M)
-r_echo_spoil        = repmat(GR, [3 1]); % [0]: right crusher on the 1st FOCI pulse (M)
-d_echo              = GR;                %      left  crusher on the 1st FOCI pulse (P)
-r_echo              = GR;                %      right crusher on the 1st FOCI pulse (P)
+%% Define gradient objects
+% s_ex
+s_ex.dur               = 7.3192;  % [msec]
+s_ex.str               = -2.9699; % [mT/m]
+s_ex.ori               = 0;       % M_ORI
+s_ex.lenc              = 6.9192;  % [msec]
+s_ex.slope             = 0.2000;  % [msec]
+s_ex.slope1            = 0.2000;  % [msec]
+s_ex.slope2            = 0.2000;  % [msec]
+s_ex.ref               = 6.1563;  % [msec]
+s_ex.time              = 0.0000;  % [msec]
+s_ex.samples           = 1083;
 
 laser_d_echo_spoil  = repmat(GR, [3 1]); % [0]: left  crusher on the 2nd FOCI pulse (M)
 laser_r_echo_spoil  = repmat(GR, [3 1]); % [0]: right crusher on the 2nd FOCI pulse (M)
 laser_d_echo        = GR;                %      left  crusher on the 2nd FOCI pulse (P)
 laser_r_echo        = GR;                %      right crusher on the 2nd FOCI pulse (P) 
 
-d_echo2_spoil       = repmat(GR, [3 1]); % [1]: left  crusher on the 3rd FOCI pulse (P)
-r_echo2_spoil       = repmat(GR, [3 1]); % [1]: right crusher on the 3rd FOCI pulse (P)
-d_echo2             = GR;                %      left  crusher on the 3rd FOCI pulse (S)
-r_echo2             = GR;                %      right crusher on the 3rd FOCI pulse (S)
+% d_echo_spoil1
+d_echo_spoil1.dur      = 1.3000;   % [msec]
+d_echo_spoil1.str      = -40.0000; % [mT/m]
+d_echo_spoil1.ori      = 1;        % P_ORI
+d_echo_spoil1.lenc     = 0.9000;   % [msec]
+d_echo_spoil1.slope    = 0.2000;   % [msec]
+d_echo_spoil1.slope1   = 0.2000;   % [msec]
+d_echo_spoil1.slope2   = 0.2000;   % [msec]
+d_echo_spoil1.ref      = 4.5832;   % [msec]
+d_echo_spoil1.time     = 5.6165;   % [msec]
+d_echo_spoil1.samples  = 142;
 
-laser_d_echo2_spoil = repmat(GR, [3 1]); % [1]: left  crusher on the 4th FOCI pulse (P)
-laser_r_echo2_spoil = repmat(GR, [3 1]); % [1]: right crusher on the 4th FOCI pulse (P)
-laser_d_echo2       = GR;                %      left  crusher on the 4th FOCI pulse (S)
-laser_r_echo2       = GR;                %      right crusher on the 4th FOCI pulse (S)
+% s_echo
+s_echo.dur             = 6.7328;   % [msec]
+s_echo.str             = 0.0000;   % [mT/m]
+s_echo.ori             = 1;        % P_ORI
+s_echo.lenc            = 6.7328;   % [msec]
+s_echo.slope           = 0.0000;   % [msec]
+s_echo.slope1          = 0.0000;   % [msec]
+s_echo.slope2          = 0.0000;   % [msec]
+s_echo.ref             = 3.3536;   % [msec]
+s_echo.time            = 5.6165;   % [msec]
+s_echo.samples         = 1054;
 
-%% Define gradient objects
+% d_echo_spoil2
+d_echo_spoil2.dur      = 1.3000;   % [msec]
+d_echo_spoil2.str      = -40.0000; % [mT/m]
+d_echo_spoil2.ori      = 2;        % S_ORI
+d_echo_spoil2.lenc     = 0.9000;   % [msec]
+d_echo_spoil2.slope    = 0.2000;   % [msec]
+d_echo_spoil2.slope1   = 0.2000;   % [msec]
+d_echo_spoil2.slope2   = 0.2000;   % [msec]
+d_echo_spoil2.ref      = 4.5832;   % [msec]
+d_echo_spoil2.time     = 14.1561;  % [msec]
+d_echo_spoil2.samples  = 142;
 
-% ex
-ex.dur     = [];
-ex.str     = [];
-ex.ori     = 0; % M_ORI
-ex.lenc    = [];
-ex.slope   = [];
-ex.slope1  = [];
-ex.slope2  = [];
-ex.ref     = [];
-ex.time    = [];
-ex.samples = [];
+% laser_s_echo
+laser_s_echo.dur       = 6.7328;  % [msec]
+laser_s_echo.str       = 0.0000;  % [mT/m]
+laser_s_echo.ori       = 1;       % P_ORI
+laser_s_echo.lenc      = 6.7328;  % [msec]
+laser_s_echo.slope     = 0.0000;  % [msec]
+laser_s_echo.slope1    = 0.0000;  % [msec]
+laser_s_echo.slope2    = 0.0000;  % [msec]
+laser_s_echo.ref       = 3.3536;  % [msec]
+laser_s_echo.time      = 14.1561; % [msec]
+laser_s_echo.samples   = 1054;
 
-% r_ex
-r_ex.dur     = [];
-r_ex.str     = [];
-r_ex.ori     = 0; % M_ORI
-r_ex.lenc    = [];
-r_ex.slope   = [];
-r_ex.slope1  = [];
-r_ex.slope2  = [];
-r_ex.ref     = [];
-r_ex.time    = [];
-r_ex.samples = [];
+% laser_s_echo2
+laser_s_echo2.dur      = 6.7328;  % [msec]
+laser_s_echo2.str      = 0.0000;  % [mT/m]
+laser_s_echo2.ori      = 2;       % S_ORI
+laser_s_echo2.lenc     = 6.7328;  % [msec]
+laser_s_echo2.slope    = 0.0000;  % [msec]
+laser_s_echo2.slope1   = 0.0000;  % [msec]
+laser_s_echo2.slope2   = 0.0000;  % [msec]
+laser_s_echo2.ref      = 3.3536;  % [msec]
+laser_s_echo2.time     = 30.6624; % [msec]
+laser_s_echo2.samples  = 1054;
 
-% d_echo
-d_echo.dur     = [];
-d_echo.str     = [];
-d_echo.ori     = 1; % P_ORI
-d_echo.lenc    = [];
-d_echo.slope   = [];
-d_echo.slope1  = [];
-d_echo.slope2  = [];
-d_echo.ref     = [];
-d_echo.time    = [];
-d_echo.samples = [];
-
-% r_echo
-r_echo.dur     = [];
-r_echo.str     = [];
-r_echo.ori     = 1; % P_ORI
-r_echo.lenc    = [];
-r_echo.slope   = [];
-r_echo.slope1  = [];
-r_echo.slope2  = [];
-r_echo.ref     = [];
-r_echo.time    = [];
-r_echo.samples = [];
-
-% laser_d_echo
-laser_d_echo.dur     = [];
-laser_d_echo.str     = [];
-laser_d_echo.ori     = 1; % P_ORI
-laser_d_echo.lenc    = [];
-laser_d_echo.slope   = [];
-laser_d_echo.slope1  = [];
-laser_d_echo.slope2  = [];
-laser_d_echo.ref     = [];
-laser_d_echo.time    = [];
-laser_d_echo.samples = [];
-
-% laser_r_echo
-laser_r_echo.dur     = [];
-laser_r_echo.str     = [];
-laser_r_echo.ori     = 1; % P_ORI
-laser_r_echo.lenc    = [];
-laser_r_echo.slope   = [];
-laser_r_echo.slope1  = [];
-laser_r_echo.slope2  = [];
-laser_r_echo.ref     = [];
-laser_r_echo.time    = [];
-laser_r_echo.samples = [];
+% r_echo_spoil2
+r_echo_spoil2.dur      = 1.3000;  % [msec]
+r_echo_spoil2.str      = 40.0000; % [mT/m]
+r_echo_spoil2.ori      = 2;       % S_ORI
+r_echo_spoil2.lenc     = 0.9000;  % [msec]
+r_echo_spoil2.slope    = 0.2000;  % [msec]
+r_echo_spoil2.slope1   = 0.2000;  % [msec]
+r_echo_spoil2.slope2   = 0.2000;  % [msec]
+r_echo_spoil2.ref      = -3.2832; % [msec]
+r_echo_spoil2.time     = 21.2020; % [msec]
+r_echo_spoil2.samples  = 142;
 
 % d_echo2
-d_echo2.dur     = [];
-d_echo2.str     = [];
-d_echo2.ori     = 2; % S_ORI
-d_echo2.lenc    = [];
-d_echo2.slope   = [];
-d_echo2.slope1  = [];
-d_echo2.slope2  = [];
-d_echo2.ref     = [];
-d_echo2.time    = [];
-d_echo2.samples = [];
+d_echo2.dur            = 1.3000;  % [msec]
+d_echo2.str            = 40.0000; % [mT/m]
+d_echo2.ori            = 0;       % M_ORI
+d_echo2.lenc           = 0.9000;  % [msec]
+d_echo2.slope          = 0.2000;  % [msec]
+d_echo2.slope1         = 0.2000;  % [msec]
+d_echo2.slope2         = 0.2000;  % [msec]
+d_echo2.ref            = 0.2000;  % [msec]
+d_echo2.time           = 30.6624; % [msec]
+d_echo2.samples        = 142;
+
+% s_echo2
+s_echo2.dur            = 6.7328;   % [msec]
+s_echo2.str            = 0.0000;   % [mT/m]
+s_echo2.ori            = 2;        % S_ORI
+s_echo2.lenc           = 6.7328;   % [msec]
+s_echo2.slope          = 0.0000;   % [msec]
+s_echo2.slope1         = 0.0000;   % [msec]
+s_echo2.slope2         = 0.0000;   % [msec]
+s_echo2.ref            = 3.3536;   % [msec]
+s_echo2.time           = 30.6624;  % [msec]
+s_echo2.samples        = 1054;
 
 % r_echo2
-r_echo2.dur     = [];
-r_echo2.str     = [];
-r_echo2.ori     = 2; % S_ORI
-r_echo2.lenc    = [];
-r_echo2.slope   = [];
-r_echo2.slope1  = [];
-r_echo2.slope2  = [];
-r_echo2.ref     = [];
-r_echo2.time    = [];
-r_echo2.samples = [];
+r_echo2.dur            = 1.3000;  % [msec]
+r_echo2.str            = 40.0000; % [mT/m]
+r_echo2.ori            = 0;       % M_ORI
+r_echo2.lenc           = 0.9000;  % [msec]
+r_echo2.slope          = 0.2000;  % [msec]
+r_echo2.slope1         = 0.2000;  % [msec]
+r_echo2.slope2         = 0.2000;  % [msec]
+r_echo2.ref            = -3.2832; % [msec]
+r_echo2.time           = 30.6624; % [msec]
+r_echo2.samples        = 142;
 
-% laser_d_echo2
-laser_d_echo2.dur     = [];
-laser_d_echo2.str     = [];
-laser_d_echo2.ori     = 2; % S_ORI
-laser_d_echo2.lenc    = [];
-laser_d_echo2.slope   = [];
-laser_d_echo2.slope1  = [];
-laser_d_echo2.slope2  = [];
-laser_d_echo2.ref     = [];
-laser_d_echo2.time    = [];
-laser_d_echo2.samples = [];
+% r_echo2_spoil1
+r_echo2_spoil1.dur     = 1.3000;  % [msec]
+r_echo2_spoil1.str     = 40.0000; % [mT/m]
+r_echo2_spoil1.ori     = 1;       % P_ORI
+r_echo2_spoil1.lenc    = 0.9000;  % [msec]
+r_echo2_spoil1.slope   = 0.2000;  % [msec]
+r_echo2_spoil1.slope1  = 0.2000;  % [msec]
+r_echo2_spoil1.slope2  = 0.2000;  % [msec]
+r_echo2_spoil1.ref     = -3.2832; % [msec]
+r_echo2_spoil1.time    = 30.6624; % [msec]
+r_echo2_spoil1.samples = 142;
 
-% laser_r_echo2
-laser_r_echo2.dur     = [];
-laser_r_echo2.str     = [];
-laser_r_echo2.ori     = 2; % S_ORI
-laser_r_echo2.lenc    = [];
-laser_r_echo2.slope   = [];
-laser_r_echo2.slope1  = [];
-laser_r_echo2.slope2  = [];
-laser_r_echo2.ref     = [];
-laser_r_echo2.time    = [];
-laser_r_echo2.samples = [];
+%% Define constants
+MGG_GAMMA_1H = 42577.46778; % [Hz/mT]
+DWELL        = 6.4e-3;      % gradient dwelltime [msec]
 
-for idx = 1:3
-    ori = idx  - 1;
+%%
+%--------------------------------------------------------------------------
+%                   __________________
+% GR`<name>:slope1 /                  \ GR`<name>:slope2
+%                 /                    \ 
+%                |------|---------------|
+%               -3      0               5 ---> t (ms)
+%                |------> GR`<name>:ref
+%--------------------------------------------------------------------------
+dur   = s_ex.dur;   % duration of the object [msec]
+str   = s_ex.str;   % strength of the gradient [mT/m]
+lenc  = s_ex.lenc;  % length of the constant part [msec]
+slope = s_ex.slope; % virtual attribute. Sets slope1 as well as slope2 [msec]
+ref   = s_ex.ref;   % reference point in the object, with respect to its begin [msec]
+time  = s_ex.time;  % time of reference point of object within the sequence [msec]
 
-    % d_echo_spoil
-    d_echo_spoil(idx).dur     = [];
-    d_echo_spoil(idx).str     = [];
-    d_echo_spoil(idx).ori     = ori;
-    d_echo_spoil(idx).lenc    = [];
-    d_echo_spoil(idx).slope   = [];
-    d_echo_spoil(idx).slope1  = [];
-    d_echo_spoil(idx).slope2  = [];
-    d_echo_spoil(idx).ref     = [];
-    d_echo_spoil(idx).time    = [];
-    d_echo_spoil(idx).samples = [];
+%% Calculate read-only attributes
+% duration of the second part of the object, between the reference point
+% and the end [msec]
+dur2 = dur - ref;
 
-    % r_echo_spoil
-    r_echo_spoil(idx).dur     = [];
-    r_echo_spoil(idx).str     = [];
-    r_echo_spoil(idx).ori     = ori;
-    r_echo_spoil(idx).lenc    = [];
-    r_echo_spoil(idx).slope   = [];
-    r_echo_spoil(idx).slope1  = [];
-    r_echo_spoil(idx).slope2  = [];
-    r_echo_spoil(idx).ref     = [];
-    r_echo_spoil(idx).time    = [];
-    r_echo_spoil(idx).samples = [];
-    
-    % laser_d_echo_spoil
-    laser_d_echo_spoil(idx).dur     = [];
-    laser_d_echo_spoil(idx).str     = [];
-    laser_d_echo_spoil(idx).ori     = ori;
-    laser_d_echo_spoil(idx).lenc    = [];
-    laser_d_echo_spoil(idx).slope   = [];
-    laser_d_echo_spoil(idx).slope1  = [];
-    laser_d_echo_spoil(idx).slope2  = [];
-    laser_d_echo_spoil(idx).ref     = [];
-    laser_d_echo_spoil(idx).time    = [];
-    laser_d_echo_spoil(idx).samples = [];
+% zeroth moment of the first part of the gradient [mT/m * msec]
+stat1 = str * (ref + ref - slope) / 2;
 
-    % laser_d_echo_spoil
-    laser_r_echo_spoil(idx).dur     = [];
-    laser_r_echo_spoil(idx).str     = [];
-    laser_r_echo_spoil(idx).ori     = ori;
-    laser_r_echo_spoil(idx).lenc    = [];
-    laser_r_echo_spoil(idx).slope   = [];
-    laser_r_echo_spoil(idx).slope1  = [];
-    laser_r_echo_spoil(idx).slope2  = [];
-    laser_r_echo_spoil(idx).ref     = [];
-    laser_r_echo_spoil(idx).time    = [];
-    laser_r_echo_spoil(idx).samples = [];
+% zeroth moment of the second part of the gradient [mT/m * msec]
+stat2 = str * (dur2 + dur2 - slope) / 2;
 
-    % d_echo2_spoil
-    d_echo2_spoil(idx).dur     = [];
-    d_echo2_spoil(idx).str     = [];
-    d_echo2_spoil(idx).ori     = ori;
-    d_echo2_spoil(idx).lenc    = [];
-    d_echo2_spoil(idx).slope   = [];
-    d_echo2_spoil(idx).slope1  = [];
-    d_echo2_spoil(idx).slope2  = [];
-    d_echo2_spoil(idx).ref     = [];
-    d_echo2_spoil(idx).time    = [];
-    d_echo2_spoil(idx).samples = [];
+%--------------------------------------------------------------------------
+% e.g.) slope = 3.7, DWELL = 1
+%
+%                  o---o---o---o---o---o
+%               x  |   |   |   |   |   |  x
+%           x   |  |   |   |   |   |   |  |   x
+%       x   |   |  |   |   |   |   |   |  |   |   x
+%   x---+---+---+--+-------------------+--+---+---+---x
+%   0   1   2   3  3.7
+%   1   2   3   4  1   2   3   4   5   6
+%
+% number of samples in slope = ceil(slope / DWELL) = 4
+%
+%
+% e.g.) slope = 3, DWELL = 1
+%
+%               o-----------------o
+%           x   |                     x
+%       x   |   |                     |   x
+%   x---+---+---+-----------------+---+---+---x
+%   0   1   2   3
+%   1   2   3
+%
+% number of samples in slope = ceil(slope / DWELL) = 3
+%--------------------------------------------------------------------------
+lenc_samples = lenc / DWELL
 
-    % r_echo2_spoil
-    r_echo2_spoil(idx).dur     = [];
-    r_echo2_spoil(idx).str     = [];
-    r_echo2_spoil(idx).ori     = ori;
-    r_echo2_spoil(idx).lenc    = [];
-    r_echo2_spoil(idx).slope   = [];
-    r_echo2_spoil(idx).slope1  = [];
-    r_echo2_spoil(idx).slope2  = [];
-    r_echo2_spoil(idx).ref     = [];
-    r_echo2_spoil(idx).time    = [];
-    r_echo2_spoil(idx).samples = [];
+%(str * lenc) / DWELL
 
-    % laser_d_echo2_spoil
-    laser_d_echo2_spoil(idx).dur     = [];
-    laser_d_echo2_spoil(idx).str     = [];
-    laser_d_echo2_spoil(idx).ori     = ori;
-    laser_d_echo2_spoil(idx).lenc    = [];
-    laser_d_echo2_spoil(idx).slope   = [];
-    laser_d_echo2_spoil(idx).slope1  = [];
-    laser_d_echo2_spoil(idx).slope2  = [];
-    laser_d_echo2_spoil(idx).ref     = [];
-    laser_d_echo2_spoil(idx).time    = [];
-    laser_d_echo2_spoil(idx).samples = [];
 
-    % laser_r_echo2_spoil
-    laser_r_echo2_spoil(idx).dur     = [];
-    laser_r_echo2_spoil(idx).str     = [];
-    laser_r_echo2_spoil(idx).ori     = ori;
-    laser_r_echo2_spoil(idx).lenc    = [];
-    laser_r_echo2_spoil(idx).slope   = [];
-    laser_r_echo2_spoil(idx).slope1  = [];
-    laser_r_echo2_spoil(idx).slope2  = [];
-    laser_r_echo2_spoil(idx).ref     = [];
-    laser_r_echo2_spoil(idx).time    = [];
-    laser_r_echo2_spoil(idx).samples = [];
-end
 
-d_echo_spoil(1).str = 0;
-d_echo_spoil(2).str = 0;
-r_echo_spoil(1).str = 0;
-r_echo_spoil(2).str = 0;
 
-laser_d_echo_spoil(1).str = 0;
-laser_d_echo_spoil(2).str = 0;
-laser_r_echo_spoil(1).str = 0;
-laser_r_echo_spoil(2).str = 0;
 
-d_echo2_spoil(1).str = 0;
-d_echo2_spoil(3).str = 0;
-r_echo2_spoil(1).str = 0;
-r_echo2_spoil(3).str = 0;
+% stat1 = ref + lenc
+% 
+% 
+% stat = str * (lenc + 2 * slope + lenc) / 2; % zeroth moment of the gradient [mT/m * msec]
 
-laser_d_echo2_spoil(1).str = 0;
-laser_d_echo2_spoil(3).str = 0;
-laser_r_echo2_spoil(1).str = 0;
-laser_r_echo2_spoil(3).str = 0;
+
+
+
+
+
+% slope_samples = ceil(slope / DWELL);
+% slope_updated = slope_samples * DWELL;
+% 
+% ref_samples = ceil((ref - slope + slope_updated) / DWELL);
+
+
+%lenc_samples = ceil(lenc / DWELL)
+
+
+
+
+% lenc = 
+% 
+% floor(s_ex.ref / DWELL) + 1
+% 
+
+% calculate the area and recalculate the gradient strength!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
