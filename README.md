@@ -1,2 +1,2 @@
-# SLASER_GIRF
+# sLASER_GIRF
  
