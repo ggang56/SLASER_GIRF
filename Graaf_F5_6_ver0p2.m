@@ -14,11 +14,15 @@ dt  = 6.4e-6;   % RF dwell time [sec]
 tau = 1e-3;     % pulse duration [sec]
 n   = 3;        % zero crossing number
 
-b1max = 0.18*1e2; % [uT], 1e4 G = 1T = 1e6 uT => 1G = 1e2 uT
-
 % Define discrete samples of time over [0 T)
 nt = ceil(tau/dt);    % number of samples
 t  = (0:nt-1).' * dt; % [sec]
+
+% b1max = 0.18*1e2; % [uT], 1e4 G = 1T = 1e6 uT => 1G = 1e2 uT
+alpha_ref = 50;  % reference free pool rotation angle [degrees]
+fb_t  = sinc(2*n/tau*(t-(tau/2)));
+gamm  = 4257.784679; % Gamma for current nucleus [Hz/G]
+b1max = (alpha_ref / 360) / (gamm * sum(fb_t) * dt) * 1e2; % [uT]
 
 %% Perform Bloch simulation
 df       = 1;   % sampling interval in frequency domain [Hz]
@@ -26,7 +30,6 @@ nf       = 2e4; % number of samples in frequency domain
 Delta_Hz = (-floor(nf/2):ceil(nf/2)-1).' * df; % [Hz]
 mx0 = zeros(nf,1); my0 = zeros(nf,1); mz0 = ones(nf,1);
 
-fb_t      = sinc(2*n/tau*(t-(tau/2)));
 b1_sinc_t = b1max * fb_t; % [uT]
 
 % Calculate the excitation profile at on-resonance on SINC
@@ -67,7 +70,7 @@ xlabel('Frequency (Hz)'); ylabel('M_z/M_0');
 
 %%
 % Robin_de_Graaf figure 5.6 (D)
-beta = [2 7]; % b5 and b7
+beta = [3 7]; % b5 and b7
 b1_gaussian_t = b1max * exp(-beta.*(2/tau*(t-tau/2)).^2);
 
 % Calculate the excitation profile at on-resonance on Gaussian
