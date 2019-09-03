@@ -8,6 +8,9 @@
 %% Clean slate
 close all; clear all; clc;
 
+%% Add paths
+addpath D:\mfiles_nam\rf_pulse_design_code\Bloch_simulator;
+
 %% Define parameters
 dt = 6.4e-6;   % RF dwell time [sec]
 T  = 1e-3;     % pulse duration [sec]
